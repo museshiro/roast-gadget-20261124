@@ -1,24 +1,19 @@
 // One-Line Roast: The Gadget You Use Every Day
-// Writes the entry line to $MAKEFUN_OUTPUT_DIR/entry.txt.
-// Deterministic: no clock, no randomness, no environment reads beyond the output dir.
+// Roasts a daily app: the password manager that judges your password
+// and then betrays its own judgment by autofilling it into a
+// sandwich shop's rewards account. Dry wit, one ironic action,
+// one concrete detail, no wasted words.
+const fs = require('node:fs');
 
-import { mkdirSync, writeFileSync } from "node:fs";
-import { join } from "node:path";
+const line = "My password manager calls my work password weak, then "
+  + "autofills it into a sandwich shop's rewards account.";
 
-const LINE =
-  "My toothbrush app gave my brushing a C+ and told me to floss more — I bought a toothbrush, it hired itself as my dentist.";
-
-const charCount = [...LINE].length; // code points, matching the gate's UTF-8 character count
-if (charCount > 200) {
-  throw new Error(`line is ${charCount} characters, over the 200 limit`);
+if ([...line].length > 200) {
+  throw new Error('line exceeds 200 characters');
 }
-if (LINE.includes("\n") || LINE.includes("\r")) {
-  throw new Error("line must be a single line");
+if (line.includes('\n') || line.includes('\r')) {
+  throw new Error('line must be a single line');
 }
 
-const outDir = process.env.MAKEFUN_OUTPUT_DIR;
-if (!outDir) {
-  throw new Error("MAKEFUN_OUTPUT_DIR is not set");
-}
-mkdirSync(outDir, { recursive: true });
-writeFileSync(join(outDir, "entry.txt"), LINE + "\n", "utf8");
+fs.mkdirSync('/output', { recursive: true });
+fs.writeFileSync('/output/entry.txt', line);
